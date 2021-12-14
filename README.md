@@ -6,6 +6,7 @@ Hi! Welcome to WeekYou - the only weekly planner that you will ever need.
 
 The idea here is simple - **all of us have different roles in our lives**, we just may not realise it. WeekYou helps you unlock your full potential.
 
+![logo](https://github.com/hellowithchicken/CS50-flask/blob/main/screenshots/welcome-page.png)
 
 ## 1. Set Roles
 
