@@ -4,6 +4,11 @@
 
 Hi! Welcome to WeekYou - the only weekly planner that you will ever need.
 
+**Technologies used**:
+* Flask
+* Jinja
+* sqlite
+
 The idea here is simple - **all of us have different roles in our lives**, we just may not realise it. WeekYou helps you unlock your full potential.
 
 ![welcome-page](https://github.com/hellowithchicken/CS50-flask/blob/main/screenshots/welcome-page.png)
