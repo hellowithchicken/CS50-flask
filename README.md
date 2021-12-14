@@ -25,7 +25,7 @@ For example:
 
 ## 3. Achieve
 
-Make sure to mark down any goals you have achieved throughout the week in the 'This week' section - this will make you feel better and also help you motivated by making your statistics look good under the 'Track' section.  Don't forget - any goals not set as completed will be mark as unsuccessful after the week ends.
+Make sure to mark down any goals you have achieved throughout the week in the 'This week' section - this will help you stay motivated by improving your statistics under the 'Track' section.  Don't forget - any goals not set as completed will be mark as unsuccessful after the week ends.
 
 ## 4. Reflect
 
