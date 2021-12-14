@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Introduction
+{% endblock %}
+
+{% block main %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<form action="/" method="post">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+          <h3 class = "text-center">Create a goal.</h3>
+          <select class="form-control" name ="roleName" required="true">
+            {% for role in roles %}
+            <option>{{ role['name'] }}</option>
+            {% endfor %}
+          </select>
+      </div>
+      <div class="card-body">
+          <div class="form-group">
+            <input class="form-control" placeholder="Short-term goal" name = 'shortTerm' required="true">
+          </div>
+      <button class="btn btn-primary" type="submit">Create</button>
+      </div>
+    </div>
+</form>
+
+<div class="container">
+    <div class="card-columns">
+      {% for role in roles %}
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+          <h1 class="my-0 font-weight-normal">{{ role["name"] }}</h1>
+        </div>
+        <div class="card-body">
+          {% set count = namespace(value=0) %}
+          {% for task in tasks %}
+              {% if task["roleName"] == role["name"] %}
+                {% set count.value = count.value + 1 %}
+                {% if task["id"]|string == edit_task_id|string %}
+                <form action="/tasks/edit/{{ edit_task_id }}" method="post">
+                    <div class="form-group">
+                        <input class="form-control" value="{{ task['taskName'] }}" name = 'edit-taskName' required="true">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Edit</button>
+                    <a class="btn btn-outline-secondary" href="/" role="button">Cancel</a>
+                </form>
+                {% elif task["status"] == 2 %}
+                <div style = "margin: 20px"><h6 class="text-center"><del class="text-success">{{ task["taskName"] }}</del></h6></div>
+                <div style = "margin: 20px"><a href="/tasks/uncomplete/{{task['id']}}" class="btn btn-warning btn-xs"><span class="fa fa-times"></span></a>
+                <a href="/tasks/edit/{{task['id']}}" class="btn btn-info btn-xs"><span class="fa fa-edit"></span></a>
+                <a href="/tasks/delete/{{task['id']}}" class="btn btn-secondary btn-xs"><span class="fa fa-trash"></span></a></div>
+                {% else %}
+                <div style = "margin: 20px"><h6 class="text-center">{{ task["taskName"] }}</h6></div>
+                <div style = "margin: 20px"><a href="/tasks/complete/{{task['id']}}" class="btn btn-success btn-xs"><span class="fa fa-check"></span></a>
+                <a href="/tasks/edit/{{task['id']}}" class="btn btn-info btn-xs"><span class="fa fa-edit"></span></a>
+                <a href="/tasks/delete/{{task['id']}}" class="btn btn-secondary btn-xs"><span class="fa fa-trash"></span></a></div>
+                {% endif %}
+              {% endif %}
+          {% endfor %}
+              {% if count.value == 0 %}
+              <h5>It seems you haven't set any goals this week...</h5>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

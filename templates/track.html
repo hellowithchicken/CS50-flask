@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Track
+{% endblock %}
+
+{% block main %}
+
+<div class="conteiner">
+    <div class="row">
+        <div class="col-9">
+            <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+            <div class="chart" id="bargraph">
+                <script>
+                    var graphs = {{plot | safe}};
+                    Plotly.plot('bargraph',graphs,{});
+                </script>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col auto">
+                    <h4 class="text-xs font-weight-bold text-info text-center ">All tasks</h4>
+                  </div>
+                  <div class="col auto">
+                    <h1 class="mr-5 font-weight-bold text-gray-800 text-right">{{all_tasks}}</h1>
+                  </div>
+                </div>
+              </div>
+             </div>
+
+            <div class="card mb-4 shadow-sm">
+             <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col auto">
+                    <h4 class="text-xs font-weight-bold text-success text-center ">Success</h4>
+                  </div>
+                  <div class="col auto">
+                    <h1 class="mr-5 font-weight-bold text-gray-800 text-right">{{all_success}}</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col auto">
+                    <h4 class="text-xs font-weight-bold text-info text-center ">Success</h4>
+                  </div>
+                  <div class="col auto">
+                    <h1 class="mr-5 font-weight-bold text-gray-800 text-right">{{((all_success/all_tasks)*100)|int}}%</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

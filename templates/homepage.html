@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Introduction
+{% endblock %}
+
+{% block main %}
+
+{% if roles|length == 0 %}
+<h1>You haven't create any roles yet. Do that in 'Roles' page!</h1>
+{% else %}
+
+
+<div class="container">
+
+    <div class="card-columns">
+
+
+      <form action="/" method="post">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h3 class = "text-center">Create a task.</h3>
+                <select class="form-control" name ="roleName" required="true">
+                  {% for role in roles %}
+                  <option>{{ role['name'] }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                  <input class="form-control" placeholder="Short-term goal" name = 'shortTerm' required="true">
+                </div>
+            <button class="btn btn-primary" type="submit">Create</button>
+            </div>
+          </div>
+      </form>
+
+          <!-- Set card -->
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col auto">
+                <h4 class="text-xs font-weight-bold text-success text-center ">Tasks</h4>
+              </div>
+              <div class="col auto">
+                <h1 class="mr-5 font-weight-bold text-gray-800 text-center">{{ (tasks_stats[0]["inProgress"] or 0)+(tasks_stats[0]["completed"] or 0)}}</h1>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-list fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Completed card -->
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed</div>
+                <div class="row no-gutters align-items-center">
+                  <div class="col-auto">
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ ((tasks_stats[0]["completed"] or 0)/((tasks_stats[0]["inProgress"] or 0)+(tasks_stats[0]["completed"] or 1)) * 100)|int }}%</div>
+                  </div>
+                  <div class="col">
+                    <div class="progress progress-sm mr-2">
+                      <div class="progress-bar bg-info" role="progressbar" style="width: {{ ((tasks_stats[0]['completed'] or 0)/((tasks_stats[0]['inProgress'] or 0)+(tasks_stats[0]['completed'] or 1)) * 100)|int }}%" aria-valuenow="{{ ((tasks_stats[0]['completed'] or 0)/((tasks_stats[0]['inProgress'] or 0)+(tasks_stats[0]['completed'] or 1)) * 100)|int }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-clipboard-list fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Pending Card -->
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col auto">
+                <h4 class="text-xs font-weight-bold text-warning text-center ">Pending</h4>
+              </div>
+              <div class="col auto">
+                <h1 class="mb-0 font-weight-bold text-gray-800 text-center">{{ (tasks_stats[0]["inProgress"] or 0) }}</h1>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-clock-o fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+      </div>
+</div>
+
+  <div class="container">
+      <div class="card-columns">
+        {% for role in roles %}
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h1 class="my-0 font-weight-normal">{{ role["name"] }} <span class="badge badge-info">{{ role["number_1"] }}</span> </h1>
+          </div>
+          <div class="card-body">
+            {% set count = namespace(value=0) %}
+            {% for task in tasks: %}
+                {% if task["roleName"] == role["name"] %}
+                  {% set count.value = count.value + 1 %}
+                  {% if task["status"] == 2 %}
+                  <div style = "margin: 20px"><h6 class="text-center"><del class="text-success">{{ task["taskName"] }}</del></h6></div>
+                  <a href="/tasks/uncomplete/{{task['id']}}" class="btn btn-warning btn-xs"><span class="fa fa-times"></span></a>
+                  <!-- <a href="/tasks/edit/{{task['id']}}" class="btn btn-info btn-xs"><span class="fa fa-edit"></span></a> -->
+                  {% else %}
+                  <div style = "margin: 20px"><h6 class="text-center">{{ task["taskName"] }}</h6></div>
+                  <a href="/tasks/complete/{{task['id']}}" class="btn btn-success btn-xs"><span class="fa fa-check"></span></a>
+                  <!--<a href="/tasks/edit/{{task['id']}}" class="btn btn-info btn-xs"><span class="fa fa-edit"></span></a> -->
+                  {% endif %}
+                  <a href="/tasks/delete/{{task['id']}}" class="btn btn-secondary btn-xs"><span class="fa fa-trash"></span></a>
+                {% endif %}
+            {% endfor %}
+                {% if count.value == 0 %}
+                <h5>It seems you haven't set any goals this week...</h5>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+  </div>
+{% endif %}
+{% endblock %}

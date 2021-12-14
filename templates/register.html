@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+
+<div class="img-wrap ratio-5-1" style = "margin:20px">
+    <div class="img-content">
+        <img src="/static/logo-via-logohub (1).png" />
+    </div>
+</div>
+
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="email" required="true">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password" required="true">
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm password" type="password" required="true">
+        </div>
+        <button class="btn btn-info" type="submit">Register</button>
+    </form>
+{% endblock %}
+

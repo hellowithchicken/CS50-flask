@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Introduction
+{% endblock %}
+
+{% block main %}
+
+{% if roles|length == 0 %}
+<h1>You haven't create any roles yet. Do that in 'Roles' page!</h1>
+{% else %}
+
+<form action="/reflect" method="post" class="form-inline mb-4">
+    <select class="form-control mr-2" name ="dateform" required="true">
+          {% for date in dates %}
+          {% if date['date'] == selected_date %}
+          <option selected="selected">{{ date['date'] }}</option>
+          {% else %}
+          <option>{{ date['date'] }}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+        <button class="btn btn-info" type="submit">Set</button>
+    </div>
+</form>
+
+
+<h3 class="text-left m-3">Week starting: {{ selected_date }}</h3>
+
+<div class="container">
+
+    <div class="card-columns">
+
+
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col auto">
+                <h4 class="text-xs font-weight-bold text-success text-center ">Done</h4>
+              </div>
+              <div class="col auto">
+                <h1 class="mr-5 font-weight-bold text-gray-800 text-center">{{done}}</h1>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-check fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Completed card -->
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col">
+                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed</div>
+                <div class="row no-gutters align-items-center">
+                  <div class="col-auto">
+                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{percent}}%</div>
+                  </div>
+                  <div class="col">
+                    <div class="progress progress-sm mr-2">
+                      <div class="progress-bar bg-info" role="progressbar" style="width: {{percent}}%" aria-valuenow="{{percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-clipboard-list fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Pending Card -->
+      <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col auto">
+                <h5 class="text-xs font-weight-bold text-warning text-center ">Unsuccessful</h5>
+              </div>
+              <div class="col auto">
+                <h1 class="mb-0 font-weight-bold text-gray-800 text-center">{{unsuccessful}}</h1>
+              </div>
+              <div class="col-auto">
+                <i class="fa fa-times fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+  <div class="container">
+      <div class="card-columns">
+        {% for role in roles %}
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">
+            <h1 class="my-0 font-weight-normal">{{ role["name"] }} <span class="badge badge-success">{{ role["number_1"] }}</span> </h1>
+          </div>
+          <div class="card-body">
+            {% set count = namespace(value=0) %}
+            {% for task in tasks %}
+                {% if task["roleName"] == role["name"] %}
+                  {% set count.value = count.value + 1 %}
+                  {% if task["status"] == 2 %}
+                  <div style = "margin: 20px"><h6 class="text-center"><del class="text-success">{{ task["taskName"] }}</del></h6></div>
+                  {% elif task["status"] == 3 %}
+                  <div style = "margin: 20px"><h6 class="text-center"><del class="text-danger">{{ task["taskName"] }}</del></h6></div>
+                  {% else %}
+                  <div style = "margin: 20px"><h6 class="text-center">{{ task["taskName"] }}</h6></div>
+                  {% endif %}
+                {% endif %}
+            {% endfor %}
+                {% if count.value == 0 %}
+                <h5>It seems you did not set any goals that week...</h5>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+  </div>
+{% endif %}
+{% endblock %}
